@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<ruleset name="CardNavigator">
+    <description>PSR-12; formatting is owned by pint — phpcs finds structural issues</description>
+    <file>app</file>
+    <file>tests</file>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>*/storage/*</exclude-pattern>
+    <exclude-pattern>*/bootstrap/cache/*</exclude-pattern>
+    <arg name="colors"/>
+    <arg value="sp"/>
+    <rule ref="PSR12">
+        <!-- PHPUnit test methods conventionally use snake_case (test_something), not camelCase -->
+        <exclude name="PSR1.Methods.CamelCapsMethodName"/>
+    </rule>
+    <!-- Raise line-length warning threshold; pint does not enforce a line limit -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="200"/>
+            <property name="absoluteLineLimit" value="0"/>
+        </properties>
+    </rule>
+</ruleset>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor
+    configVersion="3"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://www.phpdoc.org"
+    xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/phpdoc.xsd"
+>
+    <title>CardNavigator</title>
+
+    <paths>
+        <output>docs/api</output>
+        <cache>.phpdoc/cache</cache>
+    </paths>
+
+    <version number="1.0.0">
+        <api>
+            <source dsn=".">
+                <path>app</path>
+            </source>
+            <output>api</output>
+            <visibility>public</visibility>
+            <default-package-name>CardNavigator</default-package-name>
+        </api>
+    </version>
+</phpdocumentor>

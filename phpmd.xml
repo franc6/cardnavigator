@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<ruleset name="CardNavigator"
+         xmlns="http://pmd.sf.net/ruleset/1.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0
+             http://pmd.sf.net/ruleset_xml_schema.xsd"
+         xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+    <description>Full PHPMD analysis for CardNavigator</description>
+    <!-- Laravel uses facades (static access) throughout the framework by design -->
+    <rule ref="rulesets/cleancode.xml">
+        <exclude name="StaticAccess"/>
+    </rule>
+    <!-- Test classes naturally accumulate many public test methods -->
+    <rule ref="rulesets/codesize.xml">
+        <exclude name="TooManyPublicMethods"/>
+    </rule>
+    <!-- PHPUnit and Laravel Artisan generate snake_case test method names -->
+    <rule ref="rulesets/controversial.xml">
+        <exclude name="CamelCaseMethodName"/>
+    </rule>
+    <rule ref="rulesets/design.xml">
+        <!-- Laravel's Controller and TestCase base classes have many children by design -->
+        <exclude name="NumberOfChildren"/>
+    </rule>
+    <rule ref="rulesets/naming.xml"/>
+    <rule ref="rulesets/unusedcode.xml"/>
+</ruleset>
