@@ -1,6 +1,6 @@
 <p align="center"><img src="public/images/cardnavigator-logo.png" width="400" alt="Cardnavigator Logo"></p>
 
-[![CardNavigator](https://img.shields.io/github/v/release/franc6/cardnavigator.svg?1)](https://github.com/franc6/cardnavigator)
+[![CardNavigator](https://img.shields.io/github/v/release/franc6/cardnavigator.svg?v1.0.0)](https://github.com/franc6/cardnavigator)
 [![Coverage](https://codecov.io/gh/franc6/cardnavigator/branch/main/graph/badge.svg)](https://app.codecov.io/gh/franc6/cardnavigator/branch/main)
 ![Maintained:yes](https://img.shields.io/maintenance/yes/2026.svg)
 [![License](https://img.shields.io/github/license/franc6/cardnavigator.svg)](https://opensource.org/licenses/MIT)
