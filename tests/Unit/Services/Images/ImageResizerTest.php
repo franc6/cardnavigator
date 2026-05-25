@@ -271,9 +271,25 @@ class ImageResizerTest extends TestCase
     {
         // Arrange
         $resizer = $this->makeResizer('imagick');
+        $format = self::MIME_TO_IMAGICK_FORMAT[$mime];
+        // Some Imagick builds (notably CI runners) advertise HEIC/HEIF but lack a
+        // functional libheif encoder, so probe the round-trip before exercising
+        // the resizer instead of failing the test.
+        try {
+            $probe = new \Imagick;
+            $probe->newImage(10, 10, 'red');
+            $probe->setImageFormat($format);
+            $probeBlob = $probe->getImageBlob();
+            $probe->clear();
+            $verifyProbe = new \Imagick;
+            $verifyProbe->readImageBlob($probeBlob);
+            $verifyProbe->clear();
+        } catch (\ImagickException) {
+            $this->markTestSkipped("Imagick build on this host cannot round-trip {$format}.");
+        }
         $source = new \Imagick;
         $source->newImage(800, 400, 'red');
-        $source->setImageFormat(self::MIME_TO_IMAGICK_FORMAT[$mime]);
+        $source->setImageFormat($format);
         $bytes = $source->getImageBlob();
         $source->clear();
 

@@ -23,7 +23,6 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
-package-lock.json
 composer.lock
 build.zip
 /build/coverage

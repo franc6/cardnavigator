@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/franc6/cardnavigator/public/cardnavigator-logo.png" width="400" alt="Cardnavigator Logo"></p>
+<p align="center"><img src="public/images/cardnavigator-logo.png" width="400" alt="Cardnavigator Logo"></p>
 
 [![CardNavigator](https://img.shields.io/github/v/release/franc6/cardnavigator.svg?1)](https://github.com/franc6/cardnavigator)
 [![Coverage](https://codecov.io/gh/franc6/cardnavigator/branch/main/graph/badge.svg)](https://app.codecov.io/gh/franc6/cardnavigator/branch/main)

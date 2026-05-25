@@ -12,6 +12,10 @@ jobs:
     name: Build & Test
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+      pull-requests: write
+
     steps:
       - name: Check out code
         uses: actions/checkout@v6
@@ -26,12 +30,29 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build frontend assets
+        run: npm run build
+
       - name: Copy environment file
         run: cp .env.example .env && php artisan key:generate
 
       - name: Run Pint formatting check
         id: pint
         run: vendor/bin/pint --test
+        continue-on-error: true
+
+      - name: Run Jest tests
+        id: jest
+        run: npm test
         continue-on-error: true
 
       - name: Run tests with coverage
@@ -44,6 +65,7 @@ jobs:
         uses: codecov/codecov-action@v6
         with:
           files: coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
 
       - name: Generate API documentation
@@ -65,9 +87,10 @@ jobs:
           echo ""
           echo "=== CI Results ==="
           echo "Formatting (Pint):  ${{ steps.pint.outcome }}"
+          echo "Jest:               ${{ steps.jest.outcome }}"
           echo "Tests:              ${{ steps.tests.outcome }}"
           echo "=================="
-          if [ "${{ steps.pint.outcome }}" != "success" ] || [ "${{ steps.tests.outcome }}" != "success" ]; then
+          if [ "${{ steps.pint.outcome }}" != "success" ] || [ "${{ steps.jest.outcome }}" != "success" ] || [ "${{ steps.tests.outcome }}" != "success" ]; then
             exit 1
           fi
 
@@ -79,6 +102,9 @@ jobs:
             const failures = [];
             if ('${{ steps.pint.outcome }}' !== 'success') {
               failures.push('**Formatting:** Run `vendor/bin/pint` locally and commit the result.');
+            }
+            if ('${{ steps.jest.outcome }}' !== 'success') {
+              failures.push('**Jest:** Run `npm test` locally and fix the failures.');
             }
             if ('${{ steps.tests.outcome }}' !== 'success') {
               failures.push('**Tests:** Run `php artisan test --compact` locally and fix the failures.');
