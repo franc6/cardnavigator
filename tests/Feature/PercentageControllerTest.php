@@ -131,6 +131,46 @@ class PercentageControllerTest extends TestCase
         $response->assertSessionHasErrors($errorKey);
     }
 
+    #[TestDox('Posting decimal and boundary percentages saves them')]
+    #[DataProvider('validPercentageDataProvider')]
+    public function test_update_accepts_valid_values(mixed $value, string $expected): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $card = Card::factory()->create();
+        Category::factory()->create(['friendly_name' => 'Dining']);
+        $percentage = Percentage::factory()->create(['card_id' => $card->id, 'category' => 'Dining', 'percentage' => 1]);
+
+        // Act
+        $response = $this->actingAs($user)->post(route('percentages.update'), [
+            'percentages' => ['Dining' => [$card->id => $value]],
+        ]);
+
+        // Assert
+        $response->assertSessionHasNoErrors();
+        $this->assertEquals($expected, $percentage->fresh()->percentage);
+    }
+
+    #[TestDox('The percentages index shows validation errors after a failed save')]
+    public function test_index_displays_validation_errors(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $card = Card::factory()->create();
+        Category::factory()->create(['friendly_name' => 'Dining']);
+
+        // Act
+        $response = $this->actingAs($user)
+            ->from(route('percentages.index'))
+            ->followingRedirects()
+            ->post(route('percentages.update'), [
+                'percentages' => ['Dining' => [$card->id => 101]],
+            ]);
+
+        // Assert
+        $response->assertSee(__('Percentages could not be saved.'));
+    }
+
     #[TestDox('Posting percentages does not affect rows for other cards or categories')]
     public function test_update_does_not_affect_unrelated_rows(): void
     {
@@ -197,13 +237,23 @@ class PercentageControllerTest extends TestCase
     // Data providers
     // -------------------------------------------------------------------------
 
+    public static function validPercentageDataProvider(): array
+    {
+        return [
+            'decimal' => [1.5, '1.500'],
+            'three decimals' => ['2.125', '2.125'],
+            'zero' => [0, '0.000'],
+            'maximum' => [100, '100.000'],
+        ];
+    }
+
     public static function invalidPercentageDataProvider(): array
     {
         return [
             'value is missing' => ['',    'percentages.Dining.*'],
             'value is negative' => [-1,    'percentages.Dining.*'],
-            'value exceeds max' => [256,   'percentages.Dining.*'],
-            'value is not an integer' => ['abc', 'percentages.Dining.*'],
+            'value exceeds max' => [100.001, 'percentages.Dining.*'],
+            'value is not a number' => ['abc', 'percentages.Dining.*'],
         ];
     }
 }

@@ -42,7 +42,7 @@ class PercentageController
         $request->validate([
             'percentages' => 'required|array',
             'percentages.*' => 'array',
-            'percentages.*.*' => 'required|integer|min:0|max:255',
+            'percentages.*.*' => 'required|numeric|min:0|max:100',
         ]);
 
         $submittedCategories = array_keys($request->percentages);

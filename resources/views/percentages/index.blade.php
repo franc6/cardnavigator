@@ -12,6 +12,13 @@
                 </div>
             @endif
 
+            @if ($errors->any())
+                <div class="mb-4 rounded-lg border border-red-200 bg-red-50 p-4">
+                    <p class="mb-2 text-sm font-medium text-red-700">{{ __('Percentages could not be saved.') }}</p>
+                    <x-input-error :messages="$errors->all()" />
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('percentages.update') }}">
                 @csrf
 

@@ -23,12 +23,7 @@
             <directory>app</directory>
         </include>
     </source>
-    <coverage includeUncoveredFiles="true" pathCoverage="true">
-        <report>
-            <html outputDirectory="build/coverage/html"/>
-            <clover outputFile="build/coverage/clover.xml"/>
-        </report>
-    </coverage>
+    <coverage includeUncoveredFiles="true" pathCoverage="true"/>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
