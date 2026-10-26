@@ -20,7 +20,7 @@
         "babel-jest": "^30.4.1",
         "concurrently": "^10.0.6",
         "jest": "^30.4.2",
-        "jest-environment-jsdom": "^30.4.1",
+        "jest-environment-jsdom": "^30.5.2",
         "laravel-vite-plugin": "^3.0.0",
         "postcss": "^8.4.31",
         "tailwindcss": "^3.1.0",
